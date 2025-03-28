@@ -6,21 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('theater_id')->constrained()->onDelete('cascade');
+            $table->string('row');
+            $table->integer('number');
+            $table->enum('type', ['single', 'couple']);
+            $table->enum('status', ['available', 'maintenance'])->default('available');
             $table->timestamps();
+            
+            $table->unique(['theater_id', 'row', 'number']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('seats');
     }

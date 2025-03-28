@@ -6,21 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('showtimes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('movie_id')->constrained()->onDelete('cascade');
+            $table->foreignId('theater_id')->constrained()->onDelete('cascade');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
+            $table->enum('type', ['normal', 'vip']);
+            $table->string('language');
+            $table->decimal('price', 8, 2);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('showtimes');
     }
