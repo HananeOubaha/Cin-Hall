@@ -16,7 +16,6 @@ class MovieController extends Controller
         $this->movieRepository = $movieRepository;
     }
 
-   
     public function index()
     {
         return response()->json([
@@ -24,8 +23,17 @@ class MovieController extends Controller
             'data' => $this->movieRepository->all()
         ]);
     }
+    public function store(MovieRequest $request)
+    {
+        $movie = $this->movieRepository->create($request->validated());
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Movie created successfully',
+            'data' => $movie
+        ], 201);
+    }
 
-    
     public function show($id)
     {
         return response()->json([
@@ -42,7 +50,7 @@ class MovieController extends Controller
         ]);
     }
 
-  
+
     public function upcoming()
     {
         return response()->json([
